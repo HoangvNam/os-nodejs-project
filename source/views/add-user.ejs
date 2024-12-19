@@ -6,16 +6,16 @@
 
       <div class="card shadow border-0 w-100" style="max-width: 400px;">
         <div class="card-body">
-          <h1 class="h4 fw-bold text-dark mb-4">change information</h1>
+          <h1 class="h4 fw-bold text-dark mb-4">Add User</h1>
           <% if (message) { %>
             <div class="alert alert-danger text-center" role="alert">
               <%= message %>
             </div>
           <% } %>
-          <form action="/admin/edit-user/<%= id %>" method="POST">
+          <form action="/admin/add-user" method="POST">
             <div class="mb-3">
-              <label for="username" class="form-label">new username</label>
-              <input type="text" name="username" class="form-control" id="username" placeholder="<%= user.username %>" required>
+              <label for="username" class="form-label">username</label>
+              <input type="text" name="username" class="form-control" id="username" placeholder="username" required>
             </div>
             <div class="mb-3">
               <label for="password" class="form-label">Password</label>

@@ -1,2 +1,42 @@
 <!-- Giao diện để Admin tạo thêm phòng -->
-Hello World!
+<%- include("./layout/admin/header") %>
+
+<form class="container mt-4 shadow p-4 bg-white rounded" 
+      style="max-width: 600px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" 
+      action="/create-room" 
+      method="POST" 
+      enctype="multipart/form-data">
+    <div class="mb-3">
+        <label for="roomNumber" class="form-label">Room Number</label>
+        <input type="number" class="form-control" id="roomNumber" name="roomNumber" placeholder="Enter room" required>
+    </div>
+    <% if (message) { %>
+        <div class="alert alert-danger text-center" role="alert">
+          <%= message %>
+        </div>
+      <% } %>
+    <div class="mb-3">
+        <label for="bedCount" class="form-label">Bed Count</label>
+        <input type="number" class="form-control" id="bedCount" name="bedCount" placeholder="Enter your bed count" required>
+    </div>
+    <div class="mb-3">
+        <label for="status" class="form-label">Status</label>
+        <select class="form-control" id="status" name="status" required>
+            <option value="" disabled selected>Select Status</option>
+            <option value="occupied">Occupied</option>
+            <option value="available">Available</option>
+            <option value="maintenance">Maintenance</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="price" class="form-label">Price</label>
+        <input type="number" class="form-control" id="price" name="price" placeholder="Enter price" required>
+    </div>
+    <div class="mb-3">
+        <label for="image" class="form-label">Room Image</label>
+        <input type="file" class="form-control" id="image" name="image" accept="image/*">
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Submit</button>
+</form>
+
+<%- include("./layout/admin/footer") %>

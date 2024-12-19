@@ -9,7 +9,7 @@ export function verifyAdminToken(req, res, next) {
     const adminToken = req.cookies.adminToken
 
     if (!adminToken) {
-        return res.redirect("admin-login")
+        return res.redirect("/admin-login")
         // return res.status(401).json({
         //     message: "Access denied! Token missing.",
         // })
@@ -30,11 +30,11 @@ export function verifyAdminToken(req, res, next) {
 
 export class AdminController {
     static showRegister(req, res) {
-        res.render("admin-register", { title: "Admin Register" })
+        res.render("admin-register", { message: ""})
     }
 
     static showLogin(req, res) {
-        res.render("admin-login", { title: "Admin Login" })
+        res.render("admin-login", { message: "" })
     }
 
     static async showEditUser(req, res) {
@@ -42,20 +42,23 @@ export class AdminController {
             const { id } = req.params
             const user = await User.findById(id).lean()
             if (!user) {
-                return res.status(404).send("User not found");
+                return res.status(404).json({message: "User not found"});
             }
-            res.render("user-edit", { title: "Edit User Information", user })
+            res.render("user-edit", { title: "Edit User Information", user, id })
         } catch (error) {
-            res.status(500).send("Error fetching user: " + error.message)
+            res.status(500).json({message: "Error fetching user: " + error.message})
         }
     }
 
     static async register(req, res) {
         try {
             const { username, password, confirmPassword } = req.body
+            
+            const adminold = await  Admin.findOne({username: username})
+            if(adminold.username == username) return res.render("admin-register", {message: "Admin is valid"})
 
             if (password !== confirmPassword) {
-                return res.status(400).json({
+                return res.status(400).render("admin-register", {
                     message: "Passwords do not match!",
                 })
             }
@@ -69,10 +72,7 @@ export class AdminController {
 
             await newAdmin.save()
 
-            res.status(201).json({
-                message: "Admin registered successfully!",
-                admin: { id: newAdmin._id, username: newAdmin.username },
-            })
+            res.redirect("/admin-login")
         } catch (error) {
             res.status(400).json({
                 message: "Admin registration failed!",
@@ -87,14 +87,14 @@ export class AdminController {
 
             const admin = await Admin.findOne({ username })
             if (!admin) {
-                return res.status(404).json({
+                return res.status(404).render("admin-login", {
                     message: "Admin not found!",
                 })
             }
 
             const isPasswordValid = await bcrypt.compare(password, admin.password)
             if (!isPasswordValid) {
-                return res.status(401).json({
+                return res.status(401).render("admin-login", {
                     message: "Invalid username or password!",
                 })
             }
@@ -111,11 +111,7 @@ export class AdminController {
                 maxAge: 2 * 60 * 60 * 1000,
             })
 
-            res.status(200).json({
-                message: "Login successful!",
-                adminToken,
-                admin: { id: admin._id, username: admin.username },
-            })
+            res.redirect("/admin/dashboard")
         } catch (error) {
             res.status(500).json({
                 message: "Login failed!",
@@ -123,23 +119,49 @@ export class AdminController {
             })
         }
     }
-
     static async showUsers(req, res) {
         try {
-            const users = await User.find({}, { password: 0 })
-            
-            res.render("admin-users", { title: "User", users })
-            // res.status(200).json({
-            //     message: "Users retrieved successfully!",
-            //     users,
-            // })
+            // Lấy giá trị tìm kiếm từ query parameters
+            const searchQuery = req.query.search || ''; // Lấy từ query hoặc mặc định là rỗng
+
+            // Lấy trang hiện tại từ query parameters (mặc định là trang 1)
+            const page = parseInt(req.query.page) || 1;
+            const perPage = 10; // Số lượng người dùng mỗi trang
+
+            // Tính toán số người dùng cần bỏ qua dựa trên trang hiện tại
+            const skip = (page - 1) * perPage;
+
+            // Tìm kiếm chỉ theo trường `username` (hoặc trường khác nếu cần)
+            const filter = {
+                username: { $regex: searchQuery, $options: 'i' } // Tìm kiếm theo username
+            };
+
+            // Fetch users với phân trang và tìm kiếm
+            const users = await User.find(filter).skip(skip).limit(perPage).lean();
+
+            // Đếm tổng số người dùng để tính phân trang
+            const totalUsers = await User.countDocuments(filter);
+
+            // Tính tổng số trang
+            const totalPages = Math.ceil(totalUsers / perPage);
+
+            // Render lại trang với dữ liệu phân trang và kết quả tìm kiếm
+            res.render("admin-users", {
+                title: "Users",
+                users,
+                currentPage: page,
+                totalPages,
+                totalUsers,
+                searchQuery // Truyền lại giá trị tìm kiếm vào template
+            });
         } catch (error) {
             res.status(500).json({
                 message: "Failed to retrieve users!",
                 error: error.message,
-            })
+            });
         }
     }
+
 
     static async updateUser(req, res) {
         try {
@@ -161,10 +183,7 @@ export class AdminController {
             }
 
             res.redirect("/admin/users")
-            // res.status(200).json({
-            //     message: "User updated successfully!",
-            //     user: { id: updatedUser._id, username: updatedUser.username },
-            // })
+  
         } catch (error) {
             res.status(500).json({
                 message: "Failed to update user!",
@@ -183,16 +202,52 @@ export class AdminController {
                     message: "User not found!",
                 })
             }
-            
+
             res.redirect("/admin/users")
-            // res.status(200).json({
-            //     message: "User deleted successfully!",
-            // })
+        
         } catch (error) {
             res.status(500).json({
                 message: "Failed to delete user!",
                 error: error.message,
             })
+        }
+    }
+    static adminDashboard(req, res) {
+        const user = req.cookies.user || null
+        res.render("admin-dashboard", { user })
+    }
+    static addUserDisplay(req, res) {
+        res.render("add-user", {message: ""})
+    }
+    static async addUser(req, res) {
+        try {
+            const { username, password } = req.body;
+    
+            // Kiểm tra xem username đã tồn tại chưa
+            const existingUser = await User.findOne({ username: username });
+            if (existingUser) {
+                return res.render("add-user", {
+                    message: "Username is already taken. Please choose another one.",
+                });
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10);
+    
+            // Tạo người dùng mới
+            const newUser = new User({
+                username,
+                password: hashedPassword,
+            });
+    
+            await newUser.save();
+    
+            // Điều hướng người dùng đến trang đăng nhập sau khi đăng ký thành công
+            res.redirect("/admin/users");
+        } catch (error) {
+            // Render lại trang đăng ký với thông báo lỗi nếu xảy ra lỗi
+            res.render("add-user", {
+                message: "An error occurred during registration. Please try again later.",
+            });
         }
     }
 }

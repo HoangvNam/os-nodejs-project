@@ -1,2 +1,120 @@
-<!-- Giao diện phần trang quản trị -->
-Hello World!
+<%- include("./layout/admin/header") %>
+
+
+
+<style>
+    /* General Style */
+    .card {
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      width: 320px;
+      height: 280px;
+      background: linear-gradient(145deg, #ffffff, #f0f0f0);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+  
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+  
+    .icon {
+      border-radius: 15px;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    .icon img {
+      width: 50px;
+      height: 50px;
+    }
+  
+    .icon-green {
+      background: linear-gradient(145deg, #d4f4e7, #c8eddc);
+    }
+  
+    .icon-pink {
+      background: linear-gradient(145deg, #ffd8df, #fbc5cc);
+    }
+  
+    .title {
+      font-weight: 700;
+      font-size: 18px;
+      margin-top: 15px;
+      color: #333;
+    }
+  
+    .subtitle {
+      font-size: 14px;
+      color: #666;
+      margin-top: 5px;
+    }
+  
+    .container-center {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f8f9fa; /* Soft light background */
+    }
+  
+    /* Responsive */
+    @media (max-width: 768px) {
+      .card {
+        width: 90%;
+        height: auto;
+      }
+  
+      .icon img {
+        width: 40px;
+        height: 40px;
+      }
+  
+      .title {
+        font-size: 16px;
+      }
+    }
+  </style>
+  
+  <body class="bg-light">
+    <div class="container-center">
+      <div class="d-flex flex-wrap gap-4 justify-content-center">
+        <!-- Card 1 - Clickable to Navigate -->
+        <a href="/rooms" class="text-decoration-none">
+          <div class="card">
+            <div class="icon icon-green">
+              <img src="https://png.pngtree.com/png-vector/20241107/ourmid/pngtree-house-icon-home-sign-in-silver-color-style-vector-png-image_14316390.png" alt="Manage Room Icon">
+            </div>
+            <p class="title">Manage Room</p>
+            <p class="subtitle">Organize and update room details</p>
+          </div>
+        </a>
+  
+        <!-- Card 2 - Clickable to Navigate -->
+        <a href="/admin/users" class="text-decoration-none">
+          <div class="card">
+            <div class="icon icon-pink">
+              <img src="https://png.pngtree.com/png-clipart/20190904/original/pngtree-flat-user-pattern-round-avatar-pattern-png-image_4492888.jpg" alt="Manage User Icon">
+            </div>
+            <p class="title">Manage User</p>
+            <p class="subtitle">View and manage user profiles</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </body>
+  
+
+<%- include("./layout/admin/footer") %>
+
+
+
+
+

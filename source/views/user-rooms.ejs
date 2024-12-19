@@ -1,20 +1,18 @@
-<!-- Giao diện để Admin quản lí các phòng -->
-<%- include("./layout/admin/header") %>
+<!-- Giao diện để các phong -->
+<%- include("./layout/user/header") %>
 
   <section class="bg-light py-3 ">
     <div class="container ">
       <div class="card shadow border-0">
         <div class="card-body">
           <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3">
-            <form class="d-flex w-50 mb-3 mb-md-0" method="GET" action="/rooms">
+            <form class="d-flex w-50 mb-3 mb-md-0" method="GET" action="/user-rooms">
               <div class="input-group">
-                <input type="text" class="form-control" name="search" value="<%= searchQuery %>" placeholder="Search by Room Number, Status, or Bed Count" aria-label="Search">
+                <input type="text" class="form-control"  name="search" value="<%= searchQuery %>" placeholder="Search by Room Number" aria-label="Search">
                 <button class="btn btn-primary" type="submit">Search</button>
               </div>
             </form>
-            <div class="d-flex">
-              <a href="/create-room" class="btn btn-primary me-2">Add Room</a>
-            </div>
+        
           </div>
           <div class="table-responsive">
             <table class="table table-striped">
@@ -24,9 +22,8 @@
                   <th scope="col">bed count</th>
                   <th scope="col">Price</th>
                   <th scope="col">Status</th>
-                  <th scope="col">Image</th>
-                  <th scope="col">Actions</th>
 
+                  <th scope="col">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -48,27 +45,15 @@
                           <%= rooms[i].status %>
                         </span>
                       </td>
+                      
                       <td>
-                        <a href="/detail-room/<%= rooms[i]._id %>" >detail</a> 
-                      </td>
-                      <td>
-                        <div class="dropdown">
-                          <span class="text-secondary" id="productActions" data-bs-toggle="dropdown"
-                            aria-expanded="false">actions</span>
-                          <ul class="dropdown-menu" aria-labelledby="productActions">
-                        
-                              <li><a class="dropdown-item" href="edit-room/<%= rooms[i]._id %>">Edit</a></li>
-                         
-                            <form action="/delete-room/<%= rooms[i]._id  %>" method="POST">
-                              <li><button class="dropdown-item" >Delete</button></li>
-                            </form>
-                          </ul>
-                        </div>
+                        <form action="/view-book/<%= rooms[i]._id %>" method="GET">
+                            <button class="btn btn-primary <%= rooms[i].status === 'occupied' ? 'disabled' : rooms[i].status === 'available' ? ' ' : rooms[i].status === 'maintenance' ? 'disabled' : '' %>">book</button>
+                        </form>
                       </td>
                     </tr>
                     <% } } else { %>
                       <tr>
-                        <td>update...</td>
                         <td>update...</td>
                         <td>update...</td>
                         <td>update...</td>
@@ -117,4 +102,4 @@
 
 
 
-  <%- include("./layout/admin/footer") %>
+  <%- include("./layout/user/footer") %>

@@ -2,7 +2,8 @@ import { BookingController, authenticate } from "../controllers/controllers.Book
 
 
 export function routeBooking(app) {
-    app.post("/book", authenticate, BookingController.bookRoom)
-    app.get("/my-bookings", authenticate, BookingController.myBookings)
-    app.delete("/cancel/:bookingId", authenticate, BookingController.cancelBooking)
+    app.post("/view-book/:id", authenticate,BookingController.bookRoom)
+    app.get("/my-bookings", authenticate,BookingController.myBookings)
+    app.post("/my-bookings/:id", authenticate,BookingController.cancelBooking)
+    app.get("/view-book/:id", authenticate,BookingController.bookview)
 }

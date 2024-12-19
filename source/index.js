@@ -1,6 +1,5 @@
 import mongoose from "mongoose"
 import express from "express"
-import session from "express-session"
 import cookieParser from "cookie-parser"
 import path from "path"
 import morgan from "morgan"
@@ -10,6 +9,9 @@ import { routeRoom } from "./routes/routes.Room.js"
 import { routeUser } from "./routes/routes.User.js"
 import { routeBooking } from "./routes/routes.Booking.js"
 import { routeAdmin } from "./routes/routes.Admin.js"
+
+
+
 
 
 // ----------------------------------------------------------------------------
@@ -50,12 +52,12 @@ const app = express()
 app.set("view engine", "ejs")
 app.set("views", path.join(HP.__dirname, "views"))
 
-
 // ----------------------------------------------------------------------------
 
 
 // Configure static files
-app.use(express.static(path.join(HP.__dirname, "public")))
+// app.use(express.static(path.join(HP.__dirname, "uploads")))
+app.use('/images', express.static(path.join(HP.__dirname, 'public', 'images')));
 
 
 // ----------------------------------------------------------------------------
@@ -82,7 +84,7 @@ routeAdmin(app)
 
 
 // Run application
-app.listen(HP.PORT, () => {console.log(`The server is running at http://localhost:${HP.PORT}`)})
+app.listen(HP.PORT, () => {console.log(`The server is running at http://localhost:${HP.PORT}/login`)})
 
 
 // ----------------------------------------------------------------------------

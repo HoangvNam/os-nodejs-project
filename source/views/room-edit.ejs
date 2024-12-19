@@ -1,2 +1,30 @@
-<!-- Giao diện để Admin chỉnh sửa thông tin của phòng -->
-Hello World!
+<!-- Giao diện để Admin tạo thêm phòng -->
+
+<%- include("./layout/admin/header") %>
+<form class="container mt-4 shadow p-4 bg-white rounded" 
+      style="max-width: 600px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" 
+      action="#" 
+      method="POST">
+
+    <div class="mb-3">
+        <label for="bedCount" class="form-label">Bed Count</label>
+        <input type="number" class="form-control" id="bedCount" name="bedCount" placeholder="Enter your bed count" required>
+    </div>
+    <div class="mb-3">
+        <label for="status" class="form-label">Status</label>
+        <select class="form-control" id="status" name="status" required>
+            <option value="" disabled selected>Select Status</option>
+            <option value="occupied">Occupied</option>
+            <option value="available">Available</option>
+            <option value="maintenance">Maintenance</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="price" class="form-label">Price</label>
+        <input type="number" class="form-control" id="price" name="price" placeholder="Price" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+  
+  <%- include("./layout/admin/footer") %>
