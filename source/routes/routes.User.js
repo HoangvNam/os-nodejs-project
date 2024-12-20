@@ -7,4 +7,5 @@ export function routeUser(app) {
 
     app.get("/register", UserController.showRegister)
     app.get("/login", UserController.showLogin)
+    app.get('/logout', UserController.logout);
 }

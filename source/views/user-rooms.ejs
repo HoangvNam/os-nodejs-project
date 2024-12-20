@@ -1,56 +1,58 @@
-<!-- Giao diện để Admin quản lí các phòng -->
-<%- include("./layout/admin/header") %>
+<!-- Giao diện để các phong -->
+<%- include("./layout/user/header") %>
 
   <section class="bg-light py-3 ">
     <div class="container ">
       <div class="card shadow border-0">
         <div class="card-body">
           <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3">
-            <form class="d-flex w-50 mb-3 mb-md-0" method="GET" action="/admin/users">
+            <form class="d-flex w-50 mb-3 mb-md-0" method="GET" action="/user-rooms">
               <div class="input-group">
-                <input type="text" class="form-control" name="search" value="<%= searchQuery %>" placeholder="Search by Username " aria-label="Search">
+                <input type="text" class="form-control"  name="search" value="<%= searchQuery %>" placeholder="Search by Room Number" aria-label="Search">
                 <button class="btn btn-primary" type="submit">Search</button>
               </div>
             </form>
-            <div class="d-flex">
-              <a href="/admin/add-user" class="btn btn-primary me-2">Add User</a>
-            </div>
+        
           </div>
           <div class="table-responsive">
             <table class="table table-striped">
               <thead class="table-light">
                 <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Username</th>
-             
-
+                  <th scope="col">Number room</th>
+                  <th scope="col">Number of beds</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Detail</th>
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                <% if (users.length> 0) {
-                  for (var i = 0; i < users.length; i++) { %> <!-- Fixed 'int' to 'var' and 'leghth' to 'length' -->
+                <% if (rooms.length> 0) {
+                  for (var i = 0; i < rooms.length; i++) { %> <!-- Fixed 'int' to 'var' and 'leghth' to 'length' -->
                     <tr>
                       <td>
-                        <%= users[i]._id %>
+                        <%= rooms[i].roomNumber %>
                       </td>
                       <td>
-                        <%= users[i].username %> 
+                        <%= rooms[i].bedCount %> bed
+                      </td>
+                      <td>
+                        <%= rooms[i].price %>$
+                      </td>
+                      <td>
+                        <span 
+                          class="<%= rooms[i].status === 'occupied' ? 'text-danger' : rooms[i].status === 'available' ? 'text-success' : rooms[i].status === 'maintenance' ? 'text-warning' : '' %>">
+                          <%= rooms[i].status %>
+                        </span>
+                      </td>
+                      <td>
+                        <a href="/detail-room/<%= rooms[i]._id %>" >detail</a> 
                       </td>
                       
                       <td>
-                        <div class="dropdown">
-                          <span class="text-secondary" id="productActions" data-bs-toggle="dropdown"
-                            aria-expanded="false">actions</span>
-                          <ul class="dropdown-menu" aria-labelledby="productActions">
-                        
-                              <li><a class="dropdown-item" href="/admin/edit-user/<%= users[i]._id %>">Edit</a></li>
-                         
-                            <form action="/admin/delete-user/<%= users[i]._id  %>" method="POST">
-                              <li><button class="dropdown-item" >Delete</button></li>
-                            </form>
-                          </ul>
-                        </div>
+                        <form action="/view-book/<%= rooms[i]._id %>" method="GET">
+                            <button class="btn btn-primary <%= rooms[i].status === 'occupied' ? 'disabled' : rooms[i].status === 'available' ? ' ' : rooms[i].status === 'maintenance' ? 'disabled' : '' %>">book</button>
+                        </form>
                       </td>
                     </tr>
                     <% } } else { %>
@@ -75,7 +77,7 @@
             </table>
           </div>
           <nav aria-label="Pagination" class="d-flex justify-content-between align-items-center">
-            <span>Showing <%= (currentPage - 1) * 10 + 1 %> to <%= currentPage * 10 %> of <%= totalUsers %> rooms</span>
+            <span>Showing <%= (currentPage - 1) * 10 + 1 %> to <%= currentPage * 10 %> of <%= totalRooms %> rooms</span>
             <ul class="pagination mb-0">
                 <!-- Previous Page Link -->
                 <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
@@ -103,4 +105,4 @@
 
 
 
-  <%- include("./layout/admin/footer") %>
+  <%- include("./layout/user/footer") %>

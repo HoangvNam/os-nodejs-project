@@ -1,0 +1,54 @@
+<%- include("./layout/user/header") %>
+
+<div class="container mt-4">
+  <% if (bookings.length > 0) { %>
+    <% for(var i = 0; i < bookings.length; i++) { %>
+      <!-- Card Component -->
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <div class="row text-center">
+            <!-- User ID -->
+            <div class="col-6 col-md-2">
+              <p class="mb-1 fw-bold">User</p>
+              <span class="text-muted"><%= bookings[i].user %></span>
+            </div>
+            <!-- Room Number -->
+            <div class="col-6 col-md-2">
+              <p class="mb-1 fw-bold">Room Number</p>
+              <span class="text-muted"><%= bookings[i].room %></span>
+            </div>
+            <!-- Date -->
+            <div class="col-6 col-md-2">
+              <p class="mb-1 fw-bold">Date</p>
+              <span class="text-muted"><%= bookings[i].date %></span>
+            </div>
+            <!-- Time -->
+            <div class="col-6 col-md-2">
+              <p class="mb-1 fw-bold">Time</p>
+              <span class="text-muted"><%= bookings[i].time %></span>
+            </div>
+            <!-- Name Guests -->
+            <div class="col-12 col-md-3">
+              <p class="mb-1 fw-bold">Name Guests</p>
+              <span class="text-muted"><%= bookings[i].guests %></span>
+            </div>
+            <!-- Cancel Button -->
+            <div class="col-12 col-md-1 text-end">
+              <form action="/my-bookings/<%= bookings[i]._id %>" method="POST">
+                <button class="btn btn-danger">Cancel</button>
+              </form>
+           
+            </div>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  <% } else { %>
+    <!-- No Bookings -->
+    <div class="text-center mt-5">
+      <p class="h4 text-muted">You have not booked any rooms.</p>
+    </div>
+  <% } %>
+</div>
+
+<%- include("./layout/user/footer") %>

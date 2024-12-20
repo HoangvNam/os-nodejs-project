@@ -1,6 +1,5 @@
 import mongoose from "mongoose"
 import express from "express"
-import session from "express-session"
 import cookieParser from "cookie-parser"
 import path from "path"
 import morgan from "morgan"
@@ -12,13 +11,15 @@ import { routeBooking } from "./routes/routes.Booking.js"
 import { routeAdmin } from "./routes/routes.Admin.js"
 
 
+
+
+
 // ----------------------------------------------------------------------------
 
 
 export class HP {
     static __filename = fileURLToPath(import.meta.url)
     static __dirname = path.dirname(this.__filename)
-    static PORT = process.env.PORT || 3000
 }
 
 
@@ -28,6 +29,7 @@ export class HP {
 // Configure mongodb
 configDotenv({path: path.join(HP.__dirname, ".env")})
 const MONGODB_URI = process.env.MONGODB_URI
+const PORT = process.env.PORT || 4000
 export const SECRET_KEY = process.env.SECRET_KEY
 
 mongoose
@@ -50,12 +52,12 @@ const app = express()
 app.set("view engine", "ejs")
 app.set("views", path.join(HP.__dirname, "views"))
 
-
 // ----------------------------------------------------------------------------
 
 
 // Configure static files
-app.use(express.static(path.join(HP.__dirname, "public")))
+// app.use(express.static(path.join(HP.__dirname, "uploads")))
+app.use('/images', express.static(path.join(HP.__dirname, 'public', 'images')));
 
 
 // ----------------------------------------------------------------------------
@@ -82,7 +84,7 @@ routeAdmin(app)
 
 
 // Run application
-app.listen(HP.PORT, () => {console.log(`The server is running at http://localhost:${HP.PORT}`)})
+app.listen(PORT, () => {console.log(`The server is running at http://localhost:${PORT}/login`)})
 
 
 // ----------------------------------------------------------------------------

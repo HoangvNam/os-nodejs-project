@@ -1,5 +1,4 @@
-import mongoose from "mongoose"
-
+import mongoose from "mongoose";
 
 const RoomSchema = new mongoose.Schema({
     roomNumber: {
@@ -23,8 +22,12 @@ const RoomSchema = new mongoose.Schema({
         required: true,
         min: [0, 'Room price must be greater than or equal to 0'],
     },
-})
+    image: {
+        type: String, // URL của ảnh, bạn có thể thay đổi thành Buffer nếu lưu trữ ảnh trực tiếp
+        required: false, // Không bắt buộc
+        default: '', // Giá trị mặc định là chuỗi rỗng
+    },
+});
 
-
-const Room = mongoose.model('Room', RoomSchema)
-export default Room
+const Room = mongoose.model('Room', RoomSchema);
+export default Room;

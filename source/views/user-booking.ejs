@@ -1,0 +1,44 @@
+<!-- Giao diện để Admin tạo thêm phòng -->
+
+<%- include("./layout/user/header") %>
+
+<form class="container mt-4 shadow p-4 bg-white rounded" 
+      style="max-width: 600px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" 
+      action="#" 
+      method="POST">
+      <% if (message) { %>
+        <div class="alert alert-danger text-center" role="alert">
+          <%= message %>
+        </div>
+      <% } %>
+    <div class="mb-3">
+        <label for="date" class="form-label">Date</label>
+        <input type="date" class="form-control" id="date" name="date" required>
+    </div>
+    <div class="mb-3">
+        <label for="time" class="form-label">Time</label>
+        <input type="time" class="form-control" id="time" name="time" required>
+    </div>
+    <div class="mb-3">
+        <label for="guest" class="form-label">Number of people using the room</label>
+        <input type="number" class="form-control" id="guest" name="guests" placeholder="Number of people using the room" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<script>
+    // Chuyển đổi giờ thành giờ Việt Nam
+    const now = new Date(); // Lấy giờ hiện tại (giờ UTC mặc định)
+    const vietnamOffset = 7 * 60; // GMT+7, chuyển đổi sang phút
+    const localOffset = now.getTimezoneOffset(); // Offset múi giờ hiện tại của máy
+    const vietnamTime = new Date(now.getTime() + (vietnamOffset + localOffset) * 60 * 1000);
+
+    // Định dạng lại ngày theo YYYY-MM-DD
+    const todayVietnam = vietnamTime.toISOString().split('T')[0];
+
+    // Đặt giá trị min cho input date
+    document.getElementById('date').setAttribute('min', todayVietnam);
+</script>
+
+  
+  <%- include("./layout/user/footer") %>
