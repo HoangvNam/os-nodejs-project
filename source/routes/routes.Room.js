@@ -40,5 +40,5 @@ export function routeRoom(app) {
 
     app.get("/rooms",verifyAdminToken,RoomController.rooms)
     app.get("/user-rooms", RoomController.userrooms)
-    app.get("/detail-room/:id",verifyAdminToken, RoomController.detailRoom)
+    app.get("/detail-room/:id", RoomController.detailRoom)
 }

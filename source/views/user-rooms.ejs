@@ -19,10 +19,10 @@
               <thead class="table-light">
                 <tr>
                   <th scope="col">Number room</th>
-                  <th scope="col">bed count</th>
+                  <th scope="col">Number of beds</th>
                   <th scope="col">Price</th>
                   <th scope="col">Status</th>
-
+                  <th scope="col">Detail</th>
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
@@ -44,6 +44,9 @@
                           class="<%= rooms[i].status === 'occupied' ? 'text-danger' : rooms[i].status === 'available' ? 'text-success' : rooms[i].status === 'maintenance' ? 'text-warning' : '' %>">
                           <%= rooms[i].status %>
                         </span>
+                      </td>
+                      <td>
+                        <a href="/detail-room/<%= rooms[i]._id %>" >detail</a> 
                       </td>
                       
                       <td>

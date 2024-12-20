@@ -30,7 +30,7 @@ export function verifyAdminToken(req, res, next) {
 
 export class AdminController {
     static showRegister(req, res) {
-        res.render("admin-register", { message: ""})
+        res.render("admin-register", { message: "" })
     }
 
     static showLogin(req, res) {
@@ -42,20 +42,20 @@ export class AdminController {
             const { id } = req.params
             const user = await User.findById(id).lean()
             if (!user) {
-                return res.status(404).json({message: "User not found"});
+                return res.status(404).json({ message: "User not found" });
             }
             res.render("user-edit", { title: "Edit User Information", user, id })
         } catch (error) {
-            res.status(500).json({message: "Error fetching user: " + error.message})
+            res.status(500).json({ message: "Error fetching user: " + error.message })
         }
     }
 
     static async register(req, res) {
         try {
             const { username, password, confirmPassword } = req.body
-            
-            const adminold = await  Admin.findOne({username: username})
-            if(adminold.username == username) return res.render("admin-register", {message: "Admin is valid"})
+
+            const adminold = await Admin.findOne({ username: username })
+            if (adminold.username == username) return res.render("admin-register", { message: "Admin is valid" })
 
             if (password !== confirmPassword) {
                 return res.status(400).render("admin-register", {
@@ -183,7 +183,7 @@ export class AdminController {
             }
 
             res.redirect("/admin/users")
-  
+
         } catch (error) {
             res.status(500).json({
                 message: "Failed to update user!",
@@ -204,7 +204,7 @@ export class AdminController {
             }
 
             res.redirect("/admin/users")
-        
+
         } catch (error) {
             res.status(500).json({
                 message: "Failed to delete user!",
@@ -217,12 +217,12 @@ export class AdminController {
         res.render("admin-dashboard", { user })
     }
     static addUserDisplay(req, res) {
-        res.render("add-user", {message: ""})
+        res.render("add-user", { message: "" })
     }
     static async addUser(req, res) {
         try {
             const { username, password } = req.body;
-    
+
             // Kiểm tra xem username đã tồn tại chưa
             const existingUser = await User.findOne({ username: username });
             if (existingUser) {
@@ -232,15 +232,15 @@ export class AdminController {
             }
 
             const hashedPassword = await bcrypt.hash(password, 10);
-    
+
             // Tạo người dùng mới
             const newUser = new User({
                 username,
                 password: hashedPassword,
             });
-    
+
             await newUser.save();
-    
+
             // Điều hướng người dùng đến trang đăng nhập sau khi đăng ký thành công
             res.redirect("/admin/users");
         } catch (error) {

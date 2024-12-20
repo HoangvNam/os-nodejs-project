@@ -6,7 +6,11 @@
       style="max-width: 600px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" 
       action="#" 
       method="POST">
-
+      <% if (message) { %>
+        <div class="alert alert-danger text-center" role="alert">
+          <%= message %>
+        </div>
+      <% } %>
     <div class="mb-3">
         <label for="date" class="form-label">Date</label>
         <input type="date" class="form-control" id="date" name="date" required>
@@ -16,8 +20,8 @@
         <input type="time" class="form-control" id="time" name="time" required>
     </div>
     <div class="mb-3">
-        <label for="guest" class="form-label">Name Guest</label>
-        <input type="number" class="form-control" id="guest" name="guests" placeholder="Guests" required>
+        <label for="guest" class="form-label">Number of people using the room</label>
+        <input type="number" class="form-control" id="guest" name="guests" placeholder="Number of people using the room" required>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>

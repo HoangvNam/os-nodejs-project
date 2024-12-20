@@ -20,7 +20,6 @@ import { routeAdmin } from "./routes/routes.Admin.js"
 export class HP {
     static __filename = fileURLToPath(import.meta.url)
     static __dirname = path.dirname(this.__filename)
-    static PORT = process.env.PORT || 3000
 }
 
 
@@ -30,6 +29,7 @@ export class HP {
 // Configure mongodb
 configDotenv({path: path.join(HP.__dirname, ".env")})
 const MONGODB_URI = process.env.MONGODB_URI
+const PORT = process.env.PORT || 4000
 export const SECRET_KEY = process.env.SECRET_KEY
 
 mongoose
@@ -84,7 +84,7 @@ routeAdmin(app)
 
 
 // Run application
-app.listen(HP.PORT, () => {console.log(`The server is running at http://localhost:${HP.PORT}/login`)})
+app.listen(PORT, () => {console.log(`The server is running at http://localhost:${PORT}/login`)})
 
 
 // ----------------------------------------------------------------------------
